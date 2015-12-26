@@ -1,13 +1,15 @@
 <template name="myCourses">
   <button class="btn btn-primary js-create-course"><i class="fa fa-plus"></i> Create a Course</button>
   <hr>
-  <!-- {{>courseList courses=ownCourses}} -->
   <div class="row">
       <ul class="thumbnails list-unstyled">
           {{#each courses}}
-          <p>{{title}}</p>
-          <!-- {{> courseCard }} -->
+          {{>courseCard}}
           {{/each}}
       </ul>
   </div>
 </template>
+
+
+<!-- {{>courseList courses=ownCourses}} -->
+<!-- {{> courseCard }} -->
