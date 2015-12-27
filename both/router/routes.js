@@ -38,4 +38,4 @@ Router.route('license', {
   name: 'licenseQuestions'
 });
 
-Router.route('/myCourses');
+Router.route('/myTeachingCourses');
