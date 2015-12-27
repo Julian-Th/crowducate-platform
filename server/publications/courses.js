@@ -7,7 +7,7 @@ Meteor.publish('publishedCourses', function () {
 });
 
 Meteor.publish('editableCourses', function () {
-    return Courses.find({"createdById": this.userId});
+    return Courses.find({"canEditCourse": { $in: [ this.userId ] } });
 });
 
 Meteor.publish('taggedCourses', function (tag) {
