@@ -1,6 +1,7 @@
 <template name="courseCard">
     <li class="col-md-3">
         <div class="thumbnail course-card">
+            <a title="Edit Course" id="edit-course" class="btn btn-default" href="#"><i class="fa fa-edit"></i></a>
             <div class="course-image">
                 <a href ="/course/{{ _id }}">
                   <img alt="Course cover image" src="{{ coverImage.url }}" />
