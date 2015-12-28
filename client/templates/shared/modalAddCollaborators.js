@@ -11,7 +11,7 @@ Template.modalAddCollaborators.events({
 
 Template.modalAddCollaborators.helpers({
 	'addedCollaborators': function () {
-		return Courses.find();
+		return Courses.find().fetch();
 		//return Courses.find({_id: this._id}, {$in: "canEditCourse"});
 		//return Courses.distinct("canEditCourse");
 	}

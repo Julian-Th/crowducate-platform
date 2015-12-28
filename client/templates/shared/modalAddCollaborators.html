@@ -13,7 +13,12 @@
       <div class="modal-body">
         <form class="form" role="form">
           <ul class="list-group">
-            {{#each  addedCollaborators}}<li class="list-group-item">{{canEditCourse}}</li>{{/each}}
+            {{#each  addedCollaborators}}
+              {{#each canEditCourse}}
+                 <li class="list-group-item">{{this}}</li>
+             {{/each}}
+              <!-- <li class="list-group-item">{{canEditCourse}}</li> -->
+            {{/each}}
           </ul>
           <div class="form-group">
             <input type="text" id="collaboratorName" placeholder="add a collaborator  ...">
