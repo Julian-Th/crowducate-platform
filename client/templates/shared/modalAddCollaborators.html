@@ -17,11 +17,10 @@
               {{#each canEditCourse}}
                  <li class="list-group-item">{{this}}</li>
              {{/each}}
-              <!-- <li class="list-group-item">{{canEditCourse}}</li> -->
             {{/each}}
           </ul>
           <div class="form-group">
-            <input type="text" id="collaboratorName" placeholder="add a collaborator  ...">
+            <input class="form-control typeahead" type="text" id="collaboratorName" placeholder="add a collaborator  ..." data-source="courses" autocomplete="off" spellcheck="off">
             <button type="button" id="js-addCollaborator" class="btn btn-success">Add</button>
           </div>
         </form>

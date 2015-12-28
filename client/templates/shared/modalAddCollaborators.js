@@ -1,3 +1,13 @@
+Template.modalAddCollaborators.rendered = function() {
+    // initializes all typeahead instances
+    Meteor.typeahead.inject();
+};
+
+Template.modalAddCollaborators.courses = function(){
+	return Courses.find().fetch().map(function(it){ return it.author; });
+ //return users.find().fetch().map(function(it){ return it.username; });
+};
+
 Template.modalAddCollaborators.events({
 	'click #js-addCollaborator' : function (event) {
 		var collaboratorName = $('#collaboratorName').val(); // 
