@@ -37,3 +37,5 @@ Router.route('/singleresourcepage/info', {
 Router.route('license', {
   name: 'licenseQuestions'
 });
+
+Router.route('/myTeachingCourses');
