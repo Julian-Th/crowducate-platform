@@ -8,7 +8,7 @@ Template.myTeachingCourses.events({
 
 Template.myTeachingCourses.helpers({
     'courses': function(){
-        return Courses.find();
+      return Courses.find();
     }
 });
 

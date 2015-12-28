@@ -8,3 +8,11 @@ Template.modalAddCollaborators.events({
 		$('#collaboratorName').val("");
 	}
 });
+
+Template.modalAddCollaborators.helpers({
+	'addedCollaborators': function () {
+		return Courses.find();
+		//return Courses.find({_id: this._id}, {$in: "canEditCourse"});
+		//return Courses.distinct("canEditCourse");
+	}
+});

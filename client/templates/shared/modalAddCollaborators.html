@@ -12,6 +12,9 @@
       </div>
       <div class="modal-body">
         <form class="form" role="form">
+          <ul class="list-group">
+            {{#each  addedCollaborators}}<li class="list-group-item">{{canEditCourse}}</li>{{/each}}
+          </ul>
           <div class="form-group">
             <input type="text" id="collaboratorName" placeholder="add a collaborator  ...">
             <button type="button" id="js-addCollaborator" class="btn btn-success">Add</button>
