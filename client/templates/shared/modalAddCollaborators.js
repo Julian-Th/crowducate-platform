@@ -101,7 +101,7 @@ Template.modalAddCollaborators.events({
 });
 
 Template.modalAddCollaborators.events({
-  'change #add-collaborator , keyup #add-collaborator, mouseup #add-collaborator': function(event, template) {
+    'input, change, keypress, mouseup #collaborator-name': function(event, template) {
 
       var inputName = $('#collaborator-name').val().trim();
 
