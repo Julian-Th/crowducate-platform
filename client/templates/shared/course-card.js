@@ -39,6 +39,13 @@ Template.courseCard.events({
 
     // set editing course session variable to this course id
     Session.set('editingCourseId', courseId);
+  },
+  "click #manage-collaborators": function () {
+    // Get named reference to course
+    var course = this;
+
+    // Show the add collaborators modal,
+    // passing in course as data context
+    Modal.show("modalAddCollaborators", course)
   }
 });
-
