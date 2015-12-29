@@ -1,3 +1,11 @@
+Template.modalAddCollaborators.created = function () {
+  // Get reference to template instance
+  var instance = this;
+
+  // Get course object from template instance, naming for semantics
+  instance.course = instance.data;
+};
+
 Template.modalAddCollaborators.rendered = function() {
     // initializes all typeahead instances
     Meteor.typeahead.inject();
@@ -25,19 +33,21 @@ Template.modalAddCollaborators.events({
 		$('#collaboratorName').val("");
 	},
 	'click #remove-collaborator': function (event) {
-		console.log(event.target);
-		console.log($(event.target).parent());
-		var listedCollaborator = $(event.target).parent().text();
-		//console.log(listedCollaborator);
-		// Courses.update(
-		// 	{_id: this._id },
-		// 	{$pull: {canEditCourse: listedCollaborator}}
-		// );
+    // prevent button from triggering page reload
+    event.preventDefault();
+
+    // Get reference to template instance
+    var instance = Template.instance();
+
+    // Get Course ID from template instance
+    var courseId = instance.course._id;
+
+    // Get username, coercing it to a string (it is an array for some reason)
+		var username = this.toString();
+
+		Courses.update(
+			courseId,
+			{$pull: {canEditCourse: username}}
+		);
 	}
 });
-
-// Template.nestedTemplate.events({
-//   'click #remove-collaborator': function (event) {
-//     Courses.update({_id: Template.parentData()._id },{$pull: {canEditCourse: this}});
-//   }
-// });
