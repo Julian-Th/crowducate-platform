@@ -4,11 +4,13 @@ Template.modalAddCollaborators.created = function () {
 
   // Get course object from template instance, naming for semantics
   instance.course = instance.data;
+
+  instance.subscribe("allUsernamesExceptCurrent");
 };
 
 Template.modalAddCollaborators.rendered = function() {
-    // initializes all typeahead instances
-    Meteor.typeahead.inject();
+  // initializes all typeahead instances
+  Meteor.typeahead.inject();
 };
 
 Template.modalAddCollaborators.helpers({
@@ -20,7 +22,36 @@ Template.modalAddCollaborators.helpers({
     var collaborators = course.canEditCourse;
 
     return collaborators;
-	}
+	},
+  "allUsernamesExceptCurrentUser": function () {
+    // Get reference to template instance
+    var instance = Template.instance();
+
+    // Get current user id
+    var currentUserId = Meteor.userId();
+
+    if (instance.subscriptionsReady()) {
+      // Get all users except current,
+      // only get username field
+      var users = Meteor.users.find(
+        {_id: {$ne: currentUserId}},
+        {fields: {username: 1}}
+      ).fetch();
+
+      // Make an array of usernames
+      var usernames = _.map(users, function (user) {
+        // Get username from this user
+        var username = user.username;
+
+        return username;
+      });
+      
+      // Return usernames array
+      return usernames;
+    } else {
+      return [];
+    }
+  }
 });
 
 Template.modalAddCollaborators.events({
