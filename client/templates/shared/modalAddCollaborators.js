@@ -1,11 +1,18 @@
+Template.modalAddCollaborators.created = function () {
+  // Get reference to template instance
+  var instance = this;
+
+  // Set course as instance variable
+  instance.course = Courses.findOne()
+
+  // Set course author as instance variable
+  instance.courseAuthor = course.author;
+  };
+};
+
 Template.modalAddCollaborators.rendered = function() {
     // initializes all typeahead instances
     Meteor.typeahead.inject();
-};
-
-Template.modalAddCollaborators.courses = function(){
-	return Courses.find().fetch().map(function(it){ return it.author; });
- //return users.find().fetch().map(function(it){ return it.username; });
 };
 
 Template.modalAddCollaborators.helpers({
@@ -29,7 +36,7 @@ Template.modalAddCollaborators.events({
 		var listedCollaborator = $(event.target).parent().text();
 		//console.log(listedCollaborator);
 		// Courses.update(
-		// 	{_id: this._id }, 
+		// 	{_id: this._id },
 		// 	{$pull: {canEditCourse: listedCollaborator}}
 		// );
 	}
