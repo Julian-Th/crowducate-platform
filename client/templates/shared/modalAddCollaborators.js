@@ -24,19 +24,13 @@ Template.modalAddCollaborators.events({
 		$('#collaboratorName').val("");
 	},
 	'click #remove-collaborator': function (event) {
-		console.log(event.target);
-		console.log($(event.target).parent());
-		var listedCollaborator = $(event.target).parent().text();
-		//console.log(listedCollaborator);
-		// Courses.update(
-		// 	{_id: this._id }, 
-		// 	{$pull: {canEditCourse: listedCollaborator}}
-		// );
+
+    // bubble up to retrieve (user)name of the to be removed collaborator 
+    var listedCollaborator = $(event.currentTarget).parent().text();
+
+		Courses.update(
+			{_id: Template.parentData(0)._id },
+			{$pull: {canEditCourse: listedCollaborator}}
+		);
 	}
 });
-
-// Template.nestedTemplate.events({
-//   'click #remove-collaborator': function (event) {
-//     Courses.update({_id: Template.parentData()._id },{$pull: {canEditCourse: this}});
-//   }
-// });
