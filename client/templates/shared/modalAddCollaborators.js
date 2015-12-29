@@ -88,7 +88,11 @@ Template.modalAddCollaborators.events({
 			courseId,
 			{$pull: {canEditCourse: username}}
 		);
-	}
+	},
+
+  'click #close-button': function (event) {
+      $('#collaborator-name').val("");
+  }
 });
 
 Template.modalAddCollaborators.events({
@@ -97,10 +101,10 @@ Template.modalAddCollaborators.events({
       var inputName = $('#collaborator-name').val().trim();
       var isRegisteredUser = false;
 
-      if(Meteor.users.findOne({ 'username' : inputName })) {
-        isRegisteredUser = true; }
-      else {
-        isRegisteredUser = false; }
+      if(Meteor.users.findOne({ 'username' : inputName }))
+        isRegisteredUser = true;
+      else
+        isRegisteredUser = false;
 
       Session.set('canBeAdded', isRegisteredUser);
   }
