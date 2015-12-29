@@ -60,7 +60,10 @@ Template.modalAddCollaborators.helpers({
 });
 
 Template.modalAddCollaborators.events({
-	'click #add-collaborator' : function (event) {
+	'submit #add-collaborator-form' : function (event) {
+    // Prevent form submission from refreshing the page
+    event.preventDefault();
+
 		var collaboratorName = $('#collaborator-name').val();
 		Courses.update(
 		   {_id: this._id},
