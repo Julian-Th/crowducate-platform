@@ -18,11 +18,6 @@
                 <li class="list-group-item js-listed-collaborator">{{this}}<a title="Remove Collaborator" id="remove-collaborator" class="btn btn-danger pull-right" href="#"><i class="fa fa-trash"></i></a></li>
               {{/each}}
             {{/each}}
-            <!-- {{#each  addedCollaborators}}
-              {{#each canEditCourse}}
-                {{> nestedTemplate }}
-              {{/each}}
-            {{/each}} -->
           </ul>
           <div class="form-group">
             <input class="form-control typeahead" type="text" id="collaboratorName" placeholder="add a collaborator  ..." data-source="courses" autocomplete="off" spellcheck="off">
@@ -37,15 +32,3 @@
   </div>
 </div>
 </template>
-
-<!-- <template name="nestedTemplate">
-  {{#each canEditCourse}}
-    <li class="list-group-item js-listed-collaborator">{{this}}<a title="Remove Collaborator" id="remove-collaborator" class="btn btn-danger pull-right" href="#"><i class="fa fa-trash"></i></a></li>
-  {{/each}}
-</template> -->
-
-<!-- <template name="nestedTemplate">
-  <li class="list-group-item js-listed-collaborator">
-    {{this}}<a title="Remove Collaborator" id="remove-collaborator" class="btn btn-danger pull-right" href="#"><i class="fa fa-trash"></i></a>
-  </li>
-</template> -->

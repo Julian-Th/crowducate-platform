@@ -14,6 +14,14 @@ Template.courseCard.helpers({
         };
 
         return truncatedKeywordsObject;
+    },
+
+    'allowedToEdit': function(){
+
+        //var canEdit = (Meteor.userId() in this.canEditCourse);
+        var canEdit = _.contains(this.canEditCourse, Meteor.userId());
+
+        return canEdit;
     }
 });
 
