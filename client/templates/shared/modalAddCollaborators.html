@@ -13,11 +13,17 @@
       <div class="modal-body">
         <form class="form" role="form">
           <ul class="list-group">
-            {{#with  collaborators}}
-              <!-- {{#each canEditCourse}}
-                <li class="list-group-item js-listed-collaborator">{{this}}<a title="Remove Collaborator" id="remove-collaborator" class="btn btn-danger pull-right" href="#"><i class="fa fa-trash"></i></a></li>
-              {{/each}} -->
-            {{/with}}
+            {{# each  collaborators }}
+                <li class="collaborator list-group-item">
+                  <button
+                    title="Remove Collaborator"
+                    id="remove-collaborator"
+                    class="btn btn-danger btn-xs pull-right">
+                    <i class="fa fa-trash"></i>
+                  </button>
+                  <span>{{ this }}</span>
+                </li>
+            {{/ each }}
           </ul>
           <div class="form-group">
             <input class="form-control typeahead" type="text" id="collaboratorName" placeholder="add a collaborator  ..." data-source="courses" autocomplete="off" spellcheck="off">
