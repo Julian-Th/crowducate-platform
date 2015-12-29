@@ -16,10 +16,10 @@ Template.modalAddCollaborators.helpers({
 	'collaborators': function () {
     // Get course object
 		var course = Courses.findOne();
-
+    //console.log(course);
     //Get collaborators array
     var collaborators = course.canEditCourse;
-
+    //console.log(collaborators);
     return collaborators;
 	},
   "allUsernamesExceptCurrentUser": function () {
@@ -50,15 +50,7 @@ Template.modalAddCollaborators.helpers({
     } else {
       return [];
     }
-  },
-   'canBeAdded': function () {
-      var inputName = $('#collaborator-name').val();
-      
-      if(Meteor.users.findOne({ 'username' : "User2"})) {
-        return true; }
-      else {
-        return false; }
-    }
+  }
 });
 
 Template.modalAddCollaborators.events({
