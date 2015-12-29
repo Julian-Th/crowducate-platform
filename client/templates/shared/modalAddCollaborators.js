@@ -17,8 +17,11 @@ Template.modalAddCollaborators.helpers({
     // Get named reference to template instance
     var instance = Template.instance();
 
-    // Get course object
-		var course = instance.course;
+    // Get course ID
+		var courseId = instance.course._id
+
+    // Fetch course from DB, for reactivity
+    var course = Courses.findOne(courseId);
 
     //Get collaborators array
     var collaborators = course.canEditCourse;
@@ -66,9 +69,6 @@ Template.modalAddCollaborators.events({
 		$('#collaborator-name').val("");
 	},
 	'click #remove-collaborator': function (event) {
-    // prevent button from triggering page reload
-    event.preventDefault();
-
     // Get reference to template instance
     var instance = Template.instance();
 
