@@ -50,16 +50,7 @@ Template.modalAddCollaborators.helpers({
     } else {
       return [];
     }
-  },
-   'canBeAdded': function () {
-      
-      var input = Session.get('collaboratorSearchField');
-      
-      if(Meteor.users.findOne({ 'username' : input })) {
-        return true; }
-      else {
-        return false; }
-    }
+  }
 });
 
 Template.modalAddCollaborators.events({
@@ -104,23 +95,21 @@ Template.modalAddCollaborators.events({
     'input, change, keypress, mouseup #collaborator-name': function(event, template) {
 
       var inputName = $('#collaborator-name').val().trim();
+      var isRegisteredUser = false;
 
-      Session.set('collaboratorSearchField', inputName);
+      if(Meteor.users.findOne({ 'username' : inputName })) {
+        isRegisteredUser = true; }
+      else {
+        isRegisteredUser = false; }
+
+      Session.set('canBeAdded', isRegisteredUser);
   }
 });
 
-// Template.mytemplate.events({
-//   'input #element': function (event, template) {
-//     Session.set("whatever", event.currentTarget.value);
-//   }
-// });
+if (Meteor.isClient) {
 
-// $(event.currentTarget).val()
+  Template.registerHelper('canBeAdded', function(input) {
+    return Session.get("canBeAdded");
+  });
 
-// Template.myTemplate.events({
-//     'change #myelement, keyup #myelement, mouseup #myelement': function(template, event) {
-//         Session.set('myVal', $(event.currentTarget).val());
-//     }
-// });
-
-
+}
