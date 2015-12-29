@@ -9,6 +9,7 @@ Template.modalAddCollaborators.created = function () {
   // Get course object from template instance, naming for semantics
   instance.course = instance.data;
 
+  // Subscribe to all users, to get usernames for typeahead autocomplete
   instance.subscribe("allUsernamesExceptCurrent");
 };
 
@@ -54,6 +55,7 @@ Template.modalAddCollaborators.helpers({
       // Return usernames array
       return usernames;
     } else {
+      // Otherwise return an empty array
       return [];
     }
   }
