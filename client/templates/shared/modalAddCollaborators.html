@@ -7,7 +7,7 @@
         <!-- header -->
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <span class="modal-title">Manage collaborators for <em>{{ title }}</em></span>
+          <span class="modal-title">Manage collaborators for <em><b>{{ title }}</b></em></span>
         </div>
 
         <!-- body -->
@@ -38,7 +38,11 @@
                 autocomplete="off"
                 spellcheck="off">
             </div>
-            <button type="button" id="add-collaborator" class="btn btn-success">Add</button>
+            {{#if canBeAdded}}
+                <button type="button" id="add-collaborator" class="btn btn-success">Add</button>
+              {{else}}
+                <button type="button" id="add-collaborator" class="btn btn-success disabled">Add</button>
+              {{/if}}
           </form>
         </div> <!-- .modal-body -->
 

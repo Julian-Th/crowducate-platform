@@ -1,3 +1,7 @@
+Template.modalAddCollaborators.rendered = function() {
+    Meteor.typeahead.inject();
+};
+
 Template.modalAddCollaborators.created = function () {
   // Get reference to template instance
   var instance = this;
@@ -6,11 +10,6 @@ Template.modalAddCollaborators.created = function () {
   instance.course = instance.data;
 
   instance.subscribe("allUsernamesExceptCurrent");
-};
-
-Template.modalAddCollaborators.rendered = function() {
-  // initializes all typeahead instances
-  Meteor.typeahead.inject();
 };
 
 Template.modalAddCollaborators.helpers({
@@ -51,7 +50,15 @@ Template.modalAddCollaborators.helpers({
     } else {
       return [];
     }
-  }
+  },
+   'canBeAdded': function () {
+      var inputName = $('#collaborator-name').val();
+      
+      if(Meteor.users.findOne({ 'username' : "User2"})) {
+        return true; }
+      else {
+        return false; }
+    }
 });
 
 Template.modalAddCollaborators.events({
@@ -61,7 +68,7 @@ Template.modalAddCollaborators.events({
 		   {_id: this._id},
 		   {$addToSet: {canEditCourse: collaboratorName}}
 		);
-		$('#collaboratorName').val("");
+		$('#collaborator-name').val("");
 	},
 	'click #remove-collaborator': function (event) {
     // prevent button from triggering page reload

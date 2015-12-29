@@ -16,12 +16,16 @@ Template.courseCard.helpers({
         return truncatedKeywordsObject;
     },
 
-    'allowedToEdit': function(){
-
-        //var canEdit = (Meteor.userId() in this.canEditCourse);
-        var canEdit = _.contains(this.canEditCourse, Meteor.userId());
-
-        return canEdit;
+    'allowedToEditCourse': function() {
+        if (Meteor.user())
+        {
+            if(_.contains(this.canEditCourse, Meteor.user().username))
+                return true;
+            else
+                return false;
+        }
+        else
+            return false;
     }
 });
 
