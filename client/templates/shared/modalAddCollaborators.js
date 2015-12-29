@@ -52,9 +52,10 @@ Template.modalAddCollaborators.helpers({
     }
   },
    'canBeAdded': function () {
-      var inputName = $('#collaborator-name').val();
       
-      if(Meteor.users.findOne({ 'username' : "User2"})) {
+      var input = Session.get('collaboratorSearchField');
+      
+      if(Meteor.users.findOne({ 'username' : input })) {
         return true; }
       else {
         return false; }
@@ -63,12 +64,21 @@ Template.modalAddCollaborators.helpers({
 
 Template.modalAddCollaborators.events({
 	'click #add-collaborator' : function (event) {
-		var collaboratorName = $('#collaborator-name').val();
-		Courses.update(
-		   {_id: this._id},
-		   {$addToSet: {canEditCourse: collaboratorName}}
-		);
-		$('#collaborator-name').val("");
+
+		var collaboratorName = $('#collaborator-name').val().trim();
+
+    if(Meteor.users.findOne({ 'username' : collaboratorName }))
+    {
+        Courses.update(
+        {_id: this._id},
+        {$addToSet: {canEditCourse: collaboratorName}}
+        );
+
+        $('#collaborator-name').val("");
+    }
+    else
+      alert("User doesn't exist!");
+
 	},
 	'click #remove-collaborator': function (event) {
     // prevent button from triggering page reload
@@ -89,3 +99,28 @@ Template.modalAddCollaborators.events({
 		);
 	}
 });
+
+Template.modalAddCollaborators.events({
+  'change #add-collaborator , keyup #add-collaborator, mouseup #add-collaborator': function(event, template) {
+
+      var inputName = $('#collaborator-name').val().trim();
+
+      Session.set('collaboratorSearchField', inputName);
+  }
+});
+
+// Template.mytemplate.events({
+//   'input #element': function (event, template) {
+//     Session.set("whatever", event.currentTarget.value);
+//   }
+// });
+
+// $(event.currentTarget).val()
+
+// Template.myTemplate.events({
+//     'change #myelement, keyup #myelement, mouseup #myelement': function(template, event) {
+//         Session.set('myVal', $(event.currentTarget).val());
+//     }
+// });
+
+

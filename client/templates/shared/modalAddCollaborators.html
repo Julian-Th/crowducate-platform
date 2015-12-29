@@ -39,9 +39,11 @@
                 spellcheck="off">
             </div>
             {{#if canBeAdded}}
-                <button type="button" id="add-collaborator" class="btn btn-success">Add</button>
-              {{else}}
-                <button type="button" id="add-collaborator" class="btn btn-success disabled">Add</button>
+              {{> AddButtonOn}}
+                <!-- <button type="button" id="add-collaborator" class="btn btn-success">Add</button> -->
+            {{else}}
+              {{> AddButtonOff}}
+                <!-- <button type="button" id="add-collaborator" class="btn btn-success disabled">Add</button> -->
               {{/if}}
           </form>
         </div> <!-- .modal-body -->
@@ -53,4 +55,12 @@
       </div> <!-- .modal-content -->
     </div> <!-- .modal-dialogue -->
   </div> <!-- .modal -->
+</template>
+
+<template name="AddButtonOn">
+    <button type="button" id="add-collaborator" class="btn btn-success">Add</button>
+</template>
+
+<template name="AddButtonOff">
+    <button type="button" id="add-collaborator" class="btn btn-success disabled">Add</button>
 </template>
