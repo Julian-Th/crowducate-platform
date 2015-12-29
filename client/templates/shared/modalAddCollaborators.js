@@ -16,7 +16,7 @@ Template.modalAddCollaborators.helpers({
 });
 
 Template.modalAddCollaborators.events({
-	'click #addCollaborator' : function (event) {
+	'click #add-collaborator' : function (event) {
 		var collaboratorName = $('#collaboratorName').val();
 		Courses.update(
 		   {_id: this._id},
