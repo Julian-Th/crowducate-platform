@@ -14,12 +14,15 @@ Template.modalAddCollaborators.created = function () {
 
 Template.modalAddCollaborators.helpers({
 	'collaborators': function () {
+    // Get named reference to template instance
+    var instance = Template.instance();
+
     // Get course object
-		var course = Courses.findOne();
-    //console.log(course);
+		var course = instance.course;
+
     //Get collaborators array
     var collaborators = course.canEditCourse;
-    //console.log(collaborators);
+
     return collaborators;
 	},
   "allUsernamesExceptCurrentUser": function () {
