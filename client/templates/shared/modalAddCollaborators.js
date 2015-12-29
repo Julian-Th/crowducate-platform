@@ -1,22 +1,62 @@
-Template.modalAddCollaborators.rendered = function() {
-    // initializes all typeahead instances
-    Meteor.typeahead.inject();
+Template.modalAddCollaborators.created = function () {
+  // Get reference to template instance
+  var instance = this;
+
+  // Get course object from template instance, naming for semantics
+  instance.course = instance.data;
+
+  instance.subscribe("allUsernamesExceptCurrent");
 };
 
-Template.modalAddCollaborators.courses = function(){
-	return Courses.find().fetch().map(function(it){ return it.author; });
- //return users.find().fetch().map(function(it){ return it.username; });
+Template.modalAddCollaborators.rendered = function() {
+  // initializes all typeahead instances
+  Meteor.typeahead.inject();
 };
 
 Template.modalAddCollaborators.helpers({
-	'addedCollaborators': function () {
-		return Courses.find().fetch();
-	}
+	'collaborators': function () {
+    // Get course object
+		var course = Courses.findOne();
+
+    //Get collaborators array
+    var collaborators = course.canEditCourse;
+
+    return collaborators;
+	},
+  "allUsernamesExceptCurrentUser": function () {
+    // Get reference to template instance
+    var instance = Template.instance();
+
+    // Get current user id
+    var currentUserId = Meteor.userId();
+
+    if (instance.subscriptionsReady()) {
+      // Get all users except current,
+      // only get username field
+      var users = Meteor.users.find(
+        {_id: {$ne: currentUserId}},
+        {fields: {username: 1}}
+      ).fetch();
+
+      // Make an array of usernames
+      var usernames = _.map(users, function (user) {
+        // Get username from this user
+        var username = user.username;
+
+        return username;
+      });
+
+      // Return usernames array
+      return usernames;
+    } else {
+      return [];
+    }
+  }
 });
 
 Template.modalAddCollaborators.events({
-	'click #js-addCollaborator' : function (event) {
-		var collaboratorName = $('#collaboratorName').val();
+	'click #add-collaborator' : function (event) {
+		var collaboratorName = $('#collaborator-name').val();
 		Courses.update(
 		   {_id: this._id},
 		   {$addToSet: {canEditCourse: collaboratorName}}
@@ -24,13 +64,21 @@ Template.modalAddCollaborators.events({
 		$('#collaboratorName').val("");
 	},
 	'click #remove-collaborator': function (event) {
+    // prevent button from triggering page reload
+    event.preventDefault();
 
-    // bubble up to retrieve (user)name of the to be removed collaborator 
-    var listedCollaborator = $(event.currentTarget).parent().text();
+    // Get reference to template instance
+    var instance = Template.instance();
+
+    // Get Course ID from template instance
+    var courseId = instance.course._id;
+
+    // Get username, coercing it to a string (it is an array for some reason)
+		var username = this.toString();
 
 		Courses.update(
-			{_id: Template.parentData(0)._id },
-			{$pull: {canEditCourse: listedCollaborator}}
+			courseId,
+			{$pull: {canEditCourse: username}}
 		);
 	}
 });
