@@ -64,12 +64,17 @@ Template.modalAddCollaborators.events({
     // Prevent form submission from refreshing the page
     event.preventDefault();
 
-		var collaboratorName = $('#collaborator-name').val();
+    // Get collaborator username from form element
+		var collaboratorUsername = $('#collaborator-username').val();
+
+    // Update the course, adding collaborator to list
 		Courses.update(
 		   {_id: this._id},
-		   {$addToSet: {canEditCourse: collaboratorName}}
+		   {$addToSet: {canEditCourse: collaboratorUsername}}
 		);
-		$('#collaborator-name').val("");
+
+    // Clear the form field
+		$('#collaborator-username').val("");
 	},
 	'click #remove-collaborator': function (event) {
     // Get reference to template instance
