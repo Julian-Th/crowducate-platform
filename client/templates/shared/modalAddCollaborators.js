@@ -3,12 +3,12 @@ Template.modalAddCollaborators.created = function () {
   var instance = this;
 
   // Set course as instance variable
-  instance.course = Courses.findOne()
+  instance.course = Courses.findOne();
 
   // Set course author as instance variable
   instance.courseAuthor = course.author;
-  };
 };
+
 
 Template.modalAddCollaborators.rendered = function() {
     // initializes all typeahead instances
