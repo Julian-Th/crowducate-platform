@@ -30,7 +30,7 @@ Template.courseCard.helpers({
 });
 
 Template.courseCard.events({
-  'click #edit-course':function(event, template){
+  'click #edit-course': function(event, template){
     // Get reference to Router
     var router = Router.current();
 
@@ -39,6 +39,15 @@ Template.courseCard.events({
 
     // set editing course session variable to this course id
     Session.set('editingCourseId', courseId);
+  },
+
+  'click #open-collaborators': function(event, template){
+    // Get named reference to course
+    var course = this;
+
+    // Show the add collaborators modal,
+    // passing in course as data context
+    Modal.show("modalAddCollaborators", course)
   }
 });
 

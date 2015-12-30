@@ -14,6 +14,12 @@ Template.modalAddCollaborators.created = function () {
 
 Template.modalAddCollaborators.helpers({
 	'collaborators': function () {
+    // Get named reference to template instance
+    var instance = Template.instance();
+
+    // Get course ID
+    var courseId = instance.course._id
+
     // Get course object
 		var course = Courses.findOne();
 
@@ -39,8 +45,8 @@ Template.modalAddCollaborators.helpers({
 
       // Make an array of usernames
       var usernames = _.map(users, function (user) {
-        // Get username from this user
-        var username = user.username;
+      // Get username from this user
+      var username = user.username;
 
         return username;
       });
@@ -54,17 +60,23 @@ Template.modalAddCollaborators.helpers({
 });
 
 Template.modalAddCollaborators.events({
-	'click #add-collaborator' : function (event) {
+	'submit #collaborator-name' : function (event) {
+    // Prevent form submission from refreshing the page
+    //event.preventDefault();
 
 		var collaboratorName = $('#collaborator-name').val().trim();
-
+    
+    console.log("Before adding: " + collaboratorName);
+    //console.log("This ID: " + this._id);
+    //console.log("This ID: " + _id);
+    
     if(Meteor.users.findOne({ 'username' : collaboratorName }))
     {
         Courses.update(
         {_id: this._id},
         {$addToSet: {canEditCourse: collaboratorName}}
         );
-
+        // Clear the form field
         $('#collaborator-name').val("");
     }
     else
@@ -98,7 +110,10 @@ Template.modalAddCollaborators.events({
 Template.modalAddCollaborators.events({
     'input, change, keypress, mouseup #collaborator-name': function(event, template) {
 
+      //var inputName = $('#collaborator-name').val().trim();
       var inputName = $('#collaborator-name').val().trim();
+      console.log("Realtime Input: " + inputName);
+
       var isRegisteredUser = false;
 
       if(Meteor.users.findOne({ 'username' : inputName }))
@@ -117,3 +132,5 @@ if (Meteor.isClient) {
   });
 
 }
+
+//$(event.target).text()

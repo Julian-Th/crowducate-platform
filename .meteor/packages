@@ -47,3 +47,6 @@ ejson
 spacebars
 check
 sergeyt:typeahead
+autopublish
+twbs:bootstrap
+peppelg:bootstrap-3-modal
