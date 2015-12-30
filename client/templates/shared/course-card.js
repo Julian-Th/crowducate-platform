@@ -16,16 +16,12 @@ Template.courseCard.helpers({
         return truncatedKeywordsObject;
     },
 
-    'allowedToEditCourse': function() {
-        if (Meteor.user())
-        {
-            if(_.contains(this.canEditCourse, Meteor.user().username))
-                return true;
-            else
-                return false;
-        }
-        else
-            return false;
+    'allowedToEdit': function(){
+
+        //var canEdit = (Meteor.userId() in this.canEditCourse);
+        var canEdit = _.contains(this.canEditCourse, Meteor.userId());
+
+        return canEdit;
     }
 });
 
@@ -39,13 +35,6 @@ Template.courseCard.events({
 
     // set editing course session variable to this course id
     Session.set('editingCourseId', courseId);
-  },
-  "click #manage-collaborators": function () {
-    // Get named reference to course
-    var course = this;
-
-    // Show the add collaborators modal,
-    // passing in course as data context
-    Modal.show("modalAddCollaborators", course)
   }
 });
+

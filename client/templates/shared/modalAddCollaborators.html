@@ -3,50 +3,32 @@
 <template name="modalAddCollaborators">
   <div id="modalAddCollaborators" class="modal fade" role="dialog">
     <div class="modal-dialog">
-      <div class="modal-content">
-        <!-- header -->
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <span class="modal-title">Manage collaborators for <em><b>{{ title }}</b></em></span>
-        </div>
 
-        <!-- body -->
-        <div class="modal-body">
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Manage Your Collaborators</h4>
+      </div>
+      <div class="modal-body">
+        <form class="form" role="form">
           <ul class="list-group">
-            {{# each  collaborators }}
-                <li class="collaborator list-group-item">
-                  <button
-                    title="Remove Collaborator"
-                    id="remove-collaborator"
-                    class="btn btn-danger btn-xs pull-right">
-                    <i class="fa fa-trash"></i>
-                  </button>
-                  <span>{{ this }}</span>
-                </li>
-            {{/ each }}
+            {{#each  addedCollaborators}}
+              {{#each canEditCourse}}
+                <li class="list-group-item js-listed-collaborator">{{this}}<a title="Remove Collaborator" id="remove-collaborator" class="btn btn-danger pull-right" href="#"><i class="fa fa-trash"></i></a></li>
+              {{/each}}
+            {{/each}}
           </ul>
-
-          <!-- Add New Collaborator form -->
-          <form id="add-collaborator-form" class="form-inline" role="form">
-            <div class="form-group">
-              <input
-                class="form-control typeahead"
-                type="text"
-                id="collaborator-username"
-                placeholder="Add a collaborator  ..."
-                data-source="allUsernamesExceptCurrentUser"
-                autocomplete="off"
-                spellcheck="off">
-            </div>
-            <button type="submit" id="add-collaborator" class="btn btn-success">Add</button>
-          </form>
-        </div> <!-- .modal-body -->
-
-        <!-- footer -->
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        </div> <!-- .modal-footer -->
-      </div> <!-- .modal-content -->
-    </div> <!-- .modal-dialogue -->
-  </div> <!-- .modal -->
+          <div class="form-group">
+            <input class="form-control typeahead" type="text" id="collaboratorName" placeholder="add a collaborator  ..." data-source="courses" autocomplete="off" spellcheck="off">
+            <button type="button" id="js-addCollaborator" class="btn btn-success">Add</button>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
 </template>

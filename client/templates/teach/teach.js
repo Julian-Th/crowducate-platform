@@ -31,8 +31,7 @@ Template.teach.events({
             keywords: template.find('#courseKeywords').value.split(','), // split keywords to array
             published: template.find('#coursePublished').value, // string
             about: template.find('#aboutText').value, // Get the about text
-            //canEditCourse: [Meteor.userId()]
-            canEditCourse: [Meteor.user().username]
+            canEditCourse: [Meteor.userId()]
         };
 
         // Add course to collection
