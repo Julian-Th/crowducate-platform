@@ -1,36 +1,96 @@
 Template.modalAddCollaborators.rendered = function() {
-    // initializes all typeahead instances
     Meteor.typeahead.inject();
 };
 
-Template.modalAddCollaborators.courses = function(){
-	return Courses.find().fetch().map(function(it){ return it.author; });
- //return users.find().fetch().map(function(it){ return it.username; });
+Template.modalAddCollaborators.created = function () {
+  // Get reference to template instance
+  var instance = this;
+
+  // Get course object from template instance, naming for semantics
+  instance.course = instance.data;
+
+  // Subscribe to all users, to get usernames for typeahead autocomplete
+  instance.subscribe("allUsernamesExceptCurrent");
 };
 
 Template.modalAddCollaborators.helpers({
-	'addedCollaborators': function () {
-		return Courses.find().fetch();
-	}
+	'collaborators': function () {
+    // Get named reference to template instance
+    var instance = Template.instance();
+
+    // Get course ID
+		var courseId = instance.course._id
+
+    // Fetch course from DB, for reactivity
+    var course = Courses.findOne(courseId);
+
+    //Get collaborators array
+    var collaborators = course.canEditCourse;
+
+    return collaborators;
+	},
+  "allUsernamesExceptCurrentUser": function () {
+    // Get reference to template instance
+    var instance = Template.instance();
+
+    // Get current user id
+    var currentUserId = Meteor.userId();
+
+    if (instance.subscriptionsReady()) {
+      // Get all users except current,
+      // only get username field
+      var users = Meteor.users.find(
+        {_id: {$ne: currentUserId}},
+        {fields: {username: 1}}
+      ).fetch();
+
+      // Make an array of usernames
+      var usernames = _.map(users, function (user) {
+        // Get username from this user
+        var username = user.username;
+
+        return username;
+      });
+
+      // Return usernames array
+      return usernames;
+    } else {
+      // Otherwise return an empty array
+      return [];
+    }
+  }
 });
 
 Template.modalAddCollaborators.events({
-	'click #js-addCollaborator' : function (event) {
-		var collaboratorName = $('#collaboratorName').val();
+	'submit #add-collaborator-form' : function (event) {
+    // Prevent form submission from refreshing the page
+    event.preventDefault();
+
+    // Get collaborator username from form element
+		var collaboratorUsername = $('#collaborator-username').val();
+
+    // Update the course, adding collaborator to list
 		Courses.update(
 		   {_id: this._id},
-		   {$addToSet: {canEditCourse: collaboratorName}}
+		   {$addToSet: {canEditCourse: collaboratorUsername}}
 		);
-		$('#collaboratorName').val("");
+
+    // Clear the form field
+		$('#collaborator-username').val("");
 	},
 	'click #remove-collaborator': function (event) {
+    // Get reference to template instance
+    var instance = Template.instance();
 
-    // bubble up to retrieve (user)name of the to be removed collaborator 
-    var listedCollaborator = $(event.currentTarget).parent().text();
+    // Get Course ID from template instance
+    var courseId = instance.course._id;
+
+    // Get username, coercing it to a string (it is an array for some reason)
+		var username = this.toString();
 
 		Courses.update(
-			{_id: Template.parentData(0)._id },
-			{$pull: {canEditCourse: listedCollaborator}}
+			courseId,
+			{$pull: {canEditCourse: username}}
 		);
 	}
 });
