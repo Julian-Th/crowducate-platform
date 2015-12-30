@@ -46,6 +46,6 @@ Template.courseCard.events({
 
     // Show the add collaborators modal,
     // passing in course as data context
-    Modal.show("modalAddCollaborators", course)
+    Modal.show("modalAddCollaborators", course);
   }
 });

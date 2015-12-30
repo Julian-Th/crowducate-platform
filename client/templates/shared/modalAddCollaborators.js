@@ -1,3 +1,54 @@
+var triggerValidation = function(event, template){
+
+      var inputName = $('#collaborator-username').val().trim();
+
+      var isRegisteredUser = false;
+
+      // Get reference to template instance
+      var instance = Template.instance();
+
+      // Get course ID
+      var courseId = instance.course._id
+
+      // Fetch course from DB, for reactivity
+      var course = Courses.findOne(courseId);
+
+      // Get current user id
+      var currentUserId = Meteor.userId();     
+
+      if (instance.subscriptionsReady()) {
+        // Get all users except current,
+        // only get username field
+        var users = Meteor.users.find(
+          {_id: {$ne: currentUserId}},
+          {fields: {username: 1}}
+        ).fetch();
+
+      // Make an array of usernames
+      var usernames = _.map(users, function (user) {
+
+      // Get username from this user
+          var username = user.username;
+
+          return username;
+      });
+
+      //Remove course creator from array
+      usernames = _.reject(usernames, function(u) { return u == course.author; } );
+
+      //if(Meteor.users.findOne({ 'username' : inputName })){
+      if (_.contains(usernames, inputName)) {
+          isRegisteredUser = true;
+      }
+        
+      else {
+        isRegisteredUser = false;
+      }  
+
+      Session.set('canBeAdded', isRegisteredUser);
+    }
+}
+
 Template.modalAddCollaborators.rendered = function() {
     Meteor.typeahead.inject();
 };
@@ -25,13 +76,23 @@ Template.modalAddCollaborators.helpers({
     var course = Courses.findOne(courseId);
 
     //Get collaborators array
-    var collaborators = course.canEditCourse;
+    var collaborators_all = course.canEditCourse;
+
+    //Remove course creator from array
+    var collaborators = _.reject(collaborators_all, function(collab) { return collab == course.author; } );
 
     return collaborators;
   },
+
   "allUsernamesExceptCurrentUser": function () {
     // Get reference to template instance
     var instance = Template.instance();
+
+    // Get course ID
+    var courseId = instance.course._id
+
+    // Fetch course from DB, for reactivity
+    var course = Courses.findOne(courseId);
 
     // Get current user id
     var currentUserId = Meteor.userId();
@@ -44,17 +105,23 @@ Template.modalAddCollaborators.helpers({
         {fields: {username: 1}}
       ).fetch();
 
-      // Make an array of usernames
-      var usernames = _.map(users, function (user) {
-        // Get username from this user
+    // Make an array of usernames
+    var usernames = _.map(users, function (user) {
+
+    // Get username from this user
         var username = user.username;
 
         return username;
-      });
+    });
+
+    //Remove course creator from array
+    usernames = _.reject(usernames, function(u) { return u == course.author; } );
 
       // Return usernames array
       return usernames;
-    } else {
+    } 
+
+    else {
       // Otherwise return an empty array
       return [];
     }
@@ -69,29 +136,23 @@ if (Meteor.isClient) {
 
 }
 
-Template.modalAddCollaborators.events({
-  'input, change, keypress #collaborator-username': function(event, template) {
+Template.modalAddCollaborators.helpers({
 
-      var inputName = $('#collaborator-username').val().trim();
-
-      var isRegisteredUser = false;
-
-      if(Meteor.users.findOne({ 'username' : inputName })){
-        $('#collaboratorSearchError').val("");
-        isRegisteredUser = true;
-      }
-        
-      else{
-
-        if( $('#collaborator-username').val() != "") {
-          $('#collaboratorSearchError').val("User doesn't exist!"); 
-        }
-
-        isRegisteredUser = false;
-      }  
-
-      Session.set('canBeAdded', isRegisteredUser);
+  select: function(event, template) {
+    triggerValidation(event, template);
   },
+
+  autocomplete: function(event, template){
+    triggerValidation(event, template);
+  }
+});
+
+Template.modalAddCollaborators.events({
+
+  'input, change, keypress, mouseup #collaborator-username': function(event, template) {
+    triggerValidation(event, template);
+  },
+
   'click #add-collaborator' : function (event, template) {
     // Prevent form submission from refreshing the page
     event.preventDefault();
@@ -111,6 +172,7 @@ Template.modalAddCollaborators.events({
     // Clear the form field
     $('#collaborator-username').val("");
   },
+
   'click #remove-collaborator': function (event) {
     // Get reference to template instance
     var instance = Template.instance();

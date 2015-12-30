@@ -7,7 +7,7 @@
         <!-- header -->
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <span class="modal-title">Manage collaborators for <em><b>{{ title }}</b></em></span>
+          <span class="modal-title"><h3>Manage collaborators for <b>{{ title }}</b></h3></span>
         </div>
 
         <!-- body -->
@@ -35,6 +35,8 @@
                 id="collaborator-username"
                 placeholder="Add a collaborator  ..."
                 data-source="allUsernamesExceptCurrentUser"
+                data-select="select"
+                data-autocomplete="autocomplete"
                 autocomplete="off"
                 spellcheck="off">
             </div>
@@ -43,7 +45,7 @@
                 <!-- <button type="button" id="add-collaborator" class="btn btn-success">Add</button> -->
             {{else}}
               {{> AddButtonOff}}
-              <input style="border:none" type="text" id="collaboratorSearchError" name="telnum" value="" readonly="readonly" />
+              <!-- <input style="border:none" type="text" id="collaboratorSearchError" name="telnum" value="" readonly="readonly" /> -->
                 <!-- <button type="button" id="add-collaborator" class="btn btn-success disabled">Add</button> -->
             {{/if}}
             <!-- <button type="submit" id="add-collaborator" class="btn btn-success">Add</button> -->
