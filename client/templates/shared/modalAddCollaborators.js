@@ -14,12 +14,12 @@ Template.modalAddCollaborators.created = function () {
 };
 
 Template.modalAddCollaborators.helpers({
-	'collaborators': function () {
+  'collaborators': function () {
     // Get named reference to template instance
     var instance = Template.instance();
 
     // Get course ID
-		var courseId = instance.course._id
+    var courseId = instance.course._id
 
     // Fetch course from DB, for reactivity
     var course = Courses.findOne(courseId);
@@ -28,7 +28,7 @@ Template.modalAddCollaborators.helpers({
     var collaborators = course.canEditCourse;
 
     return collaborators;
-	},
+  },
   "allUsernamesExceptCurrentUser": function () {
     // Get reference to template instance
     var instance = Template.instance();
@@ -61,24 +61,57 @@ Template.modalAddCollaborators.helpers({
   }
 });
 
+if (Meteor.isClient) {
+
+  Template.registerHelper('canBeAdded', function(input) {
+    return Session.get("canBeAdded");
+  });
+
+}
+
 Template.modalAddCollaborators.events({
-	'submit #add-collaborator-form' : function (event) {
+  'input, change, keypress #collaborator-username': function(event, template) {
+
+      var inputName = $('#collaborator-username').val().trim();
+
+      var isRegisteredUser = false;
+
+      if(Meteor.users.findOne({ 'username' : inputName })){
+        $('#collaboratorSearchError').val("");
+        isRegisteredUser = true;
+      }
+        
+      else{
+
+        if( $('#collaborator-username').val() != "") {
+          $('#collaboratorSearchError').val("User doesn't exist!"); 
+        }
+
+        isRegisteredUser = false;
+      }  
+
+      Session.set('canBeAdded', isRegisteredUser);
+  },
+  'click #add-collaborator' : function (event, template) {
     // Prevent form submission from refreshing the page
     event.preventDefault();
 
     // Get collaborator username from form element
-		var collaboratorUsername = $('#collaborator-username').val();
+    var collaboratorUsername = $('#collaborator-username').val();
 
-    // Update the course, adding collaborator to list
-		Courses.update(
-		   {_id: this._id},
-		   {$addToSet: {canEditCourse: collaboratorUsername}}
-		);
+    if(Meteor.users.findOne({ 'username' : collaboratorUsername }))
+    {
+      // Update the course, adding collaborator to list
+      Courses.update(
+         {_id: this._id},
+         {$addToSet: {canEditCourse: collaboratorUsername}}
+      );
+    }
 
     // Clear the form field
-		$('#collaborator-username').val("");
-	},
-	'click #remove-collaborator': function (event) {
+    $('#collaborator-username').val("");
+  },
+  'click #remove-collaborator': function (event) {
     // Get reference to template instance
     var instance = Template.instance();
 
@@ -86,11 +119,11 @@ Template.modalAddCollaborators.events({
     var courseId = instance.course._id;
 
     // Get username, coercing it to a string (it is an array for some reason)
-		var username = this.toString();
+    var username = this.toString();
 
-		Courses.update(
-			courseId,
-			{$pull: {canEditCourse: username}}
-		);
-	}
+    Courses.update(
+      courseId,
+      {$pull: {canEditCourse: username}}
+    );
+  }
 });

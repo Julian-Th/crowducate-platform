@@ -38,7 +38,15 @@
                 autocomplete="off"
                 spellcheck="off">
             </div>
-            <button type="submit" id="add-collaborator" class="btn btn-success">Add</button>
+            {{#if canBeAdded}}
+              {{> AddButtonOn}}
+                <!-- <button type="button" id="add-collaborator" class="btn btn-success">Add</button> -->
+            {{else}}
+              {{> AddButtonOff}}
+              <input style="border:none" type="text" id="collaboratorSearchError" name="telnum" value="" readonly="readonly" />
+                <!-- <button type="button" id="add-collaborator" class="btn btn-success disabled">Add</button> -->
+            {{/if}}
+            <!-- <button type="submit" id="add-collaborator" class="btn btn-success">Add</button> -->
           </form>
         </div> <!-- .modal-body -->
 
@@ -49,4 +57,12 @@
       </div> <!-- .modal-content -->
     </div> <!-- .modal-dialogue -->
   </div> <!-- .modal -->
+</template>
+
+<template name="AddButtonOn">
+    <button type="button" id="add-collaborator" class="btn btn-success">Add</button>
+</template>
+
+<template name="AddButtonOff">
+    <button type="button" id="add-collaborator" class="btn btn-success disabled">Add</button>
 </template>
