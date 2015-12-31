@@ -1,21 +1,3 @@
-// Template.courseCard.onRendered(function (){
-
-//   // Get reference to template instance
-//   var instance = Template.instance();
-
-//   // Get course ID
-//   var ImageId = instance.course.coverImageId;
-
-//   alert("coverImageId: " +ImageId);
-//   // Fetch course from DB, for reactivity
-//   //var course = Courses.findOne(courseId);
-
-//   // Get current user id
-//   //var currentUserId = Meteor.userId();     
-
-//   //Meteor.subscribe("publishedCourses");
-// });
-
 Template.courseCard.helpers({
     'truncateKeywords': function (truncate, keywords) {
         /*
