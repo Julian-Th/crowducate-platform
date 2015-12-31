@@ -8,7 +8,11 @@ Template.myTeachingCourses.events({
 
 Template.myTeachingCourses.helpers({
     'courses': function(){
-      return Courses.find();
+	  
+    var myUser = Meteor.user().username;
+
+	  return Courses.find({"canEditCourse": { $in: [ myUser ] } });
+      //return Courses.find();
     }
 });
 
@@ -17,5 +21,5 @@ Template.myTeachingCourses.created = function () {
   var instance = this;
 
   // Subscribe to all published courses
-  instance.subscribe("editableCourses");
+  instance.subscribe("publishedCourses");
 };
